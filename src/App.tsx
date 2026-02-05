@@ -1,12 +1,14 @@
 import {Navbar} from "./components/Navbar.tsx";
 import Hero from "./components/Hero.tsx";
+import Cocktails from "./components/Cocktails.tsx";
 
 const App = () => {
     return (
         <div>
             <Navbar/>
             <Hero/>
-            <div className={"h-screen"} ></div>
+            <Cocktails/>
+            <div className=" h-screen"></div>
         </div>
     );
 };

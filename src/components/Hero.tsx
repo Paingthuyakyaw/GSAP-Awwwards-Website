@@ -41,8 +41,8 @@ const Hero = () => {
            .to(".left-leaf" , {y : -200} , 0)
            .to(".right-leaf" , {y : 200} , 0)
 
-       const startValue = isMobile ? 'center 50%' : 'center 60%';
-       const endValue =  isMobile ? '120% bottom'  : 'bottom top';
+       const startValue = isMobile ? 'top 50%' : 'center 60%';
+       const endValue =  isMobile ? '120% top'  : 'bottom top';
 
        const tl = gsap.timeline({
            scrollTrigger : {
@@ -51,7 +51,6 @@ const Hero = () => {
                end : endValue,
                scrub : true,
                pin : true,
-               markers : true
            }
        })
 
@@ -59,7 +58,7 @@ const Hero = () => {
            videoRef.current.onloadedmetadata = () => {
                tl.to(videoRef.current!, {
                    currentTime: videoRef.current!.duration,
-                   scale : 0.9
+                   // scale : isMobile ? 1 :  0.9
                });
            };
        }
@@ -69,8 +68,9 @@ const Hero = () => {
     return (
       <>
           <section id={"hero"} className={"noisy"} >
-              <h1 className={"title"}>MOJITO</h1>
-
+              <h1 className="title  ">
+                  MOJITO
+              </h1>
               <img src={"/images/hero-left-leaf.png"} alt={"left leaf"} className={"left-leaf"} />
               <img src={"/images/hero-right-leaf.png"} alt={"right leaf"} className={"right-leaf"} />
 
@@ -91,7 +91,7 @@ const Hero = () => {
               </div>
           </section>
 
-          <div className=" video absolute inset-0 ">
+          <div className=" video fixed inset-0 ">
             <video ref={videoRef} src={"/videos/output.mp4"} muted playsInline preload={"auto"} />
           </div>
       </>
