@@ -2,14 +2,14 @@ import {useGSAP} from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import {ScrollTrigger} from  "gsap/ScrollTrigger"
 import gsap from "gsap";
+import {useRef} from "react";
+import {useMediaQuery} from "react-responsive";
 
 gsap.registerPlugin(SplitText,ScrollTrigger);
 const Hero = () => {
-
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const isMobile = useMediaQuery({maxWidth : 767})
    useGSAP(() => {
-
-
-
        const heroSplit = new SplitText(".title" , {type : "words, chars"} )
        const paraSplit = new SplitText(".subtitle" , {type : "lines"} )
 
@@ -36,37 +36,65 @@ const Hero = () => {
                start : "top top",
                end : "bottom top",
                scrub : true,
-
            }
        })
            .to(".left-leaf" , {y : -200} , 0)
            .to(".right-leaf" , {y : 200} , 0)
 
+       const startValue = isMobile ? 'center 50%' : 'center 60%';
+       const endValue =  isMobile ? '120% bottom'  : 'bottom top';
+
+       const tl = gsap.timeline({
+           scrollTrigger : {
+               trigger : "video",
+               start : startValue,
+               end : endValue,
+               scrub : true,
+               pin : true,
+               markers : true
+           }
+       })
+
+       if (videoRef.current) {
+           videoRef.current.onloadedmetadata = () => {
+               tl.to(videoRef.current!, {
+                   currentTime: videoRef.current!.duration,
+                   scale : 0.9
+               });
+           };
+       }
+
    } ,[])
 
     return (
-        <section id={"hero"} className={"noisy"} >
-            <h1 className={"title"}>MOJITO</h1>
+      <>
+          <section id={"hero"} className={"noisy"} >
+              <h1 className={"title"}>MOJITO</h1>
 
-            <img src={"/images/hero-left-leaf.png"} alt={"left leaf"} className={"left-leaf"} />
-            <img src={"/images/hero-right-leaf.png"} alt={"right leaf"} className={"right-leaf"} />
+              <img src={"/images/hero-left-leaf.png"} alt={"left leaf"} className={"left-leaf"} />
+              <img src={"/images/hero-right-leaf.png"} alt={"right leaf"} className={"right-leaf"} />
 
-            <div className={"body"} >
-                <div className={"content"} >
-                    <div className=" space-y-5 hidden md:block">
-                        <p>Cool. Crisp. Classic.</p>
-                        <p className="subtitle">
-                            Sip the Spirit <br/> of Summer
-                        </p>
-                    </div>
+              <div className={"body"} >
+                  <div className={"content"} >
+                      <div className=" space-y-5 hidden md:block">
+                          <p>Cool. Crisp. Classic.</p>
+                          <p className="subtitle">
+                              Sip the Spirit <br/> of Summer
+                          </p>
+                      </div>
 
-                    <div className={"view-cocktails"} >
-                        <p className="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam facilis incidunt ipsam magni omnis quia quidem repudiandae sunt voluptas.</p>
-                        <a href="#cocktails">View Cocktails</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+                      <div className={"view-cocktails"} >
+                          <p className="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam facilis incidunt ipsam magni omnis quia quidem repudiandae sunt voluptas.</p>
+                          <a href="#cocktails">View Cocktails</a>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <div className=" video absolute inset-0 ">
+            <video ref={videoRef} src={"/videos/output.mp4"} muted playsInline preload={"auto"} />
+          </div>
+      </>
     );
 };
 
