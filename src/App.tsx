@@ -1,15 +1,22 @@
-import {Navbar} from "./components/Navbar.tsx";
 import Hero from "./components/Hero.tsx";
 import Cocktails from "./components/Cocktails.tsx";
-
+import About from "./components/About.tsx";
+import Art from "./components/Art.tsx";
+import Menu from "./components/Menu.tsx";
+import Navbar from "./components/Navbar.tsx";
+import gsap from 'gsap';
+import { ScrollTrigger, SplitText } from "gsap/all";
+gsap.registerPlugin(ScrollTrigger, SplitText);
 const App = () => {
     return (
-        <div>
+        <main>
             <Navbar/>
             <Hero/>
             <Cocktails/>
-            <div className=" h-screen"></div>
-        </div>
+            <About/>
+            <Art/>
+           <Menu/>
+        </main>
     );
 };
 
